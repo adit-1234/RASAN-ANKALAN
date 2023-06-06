@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RASAN ANKALAN</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #008080;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        form {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #008080;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #008080;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        p {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .low-toxicity {
+            color: #008000;
+        }
+
+        .moderate-toxicity {
+            color: #FFA500;
+        }
+
+        .high-toxicity {
+            color: #FF0000;
+        }
+
+        .significant-toxicity {
+            color: #8B0000;
+        }
+
+        .extreme-toxicity {
+            color: #800080;
+        }
+
+        .message {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">RASAN ANKALAN</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/predict" method="post">
+                    <div class="form-group">
+                        <label for="molweight">Molecular Weight:</label>
+                        <input type="text" name="molweight" class="form-control" placeholder="Enter molecular weight">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numatoms">Number of Atoms:</label>
+                        <input type="text" name="numatoms" class="form-control" placeholder="Enter number of atoms">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numheavyatoms">Number of Heavy Atoms:</label>
+                        <input type="text" name="numheavyatoms" class="form-control" placeholder="Enter number of heavy atoms">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="numrotatablebonds">Number of Rotatable Bonds:</label>
+                        <input type="text" name="numrotatablebonds" class="form-control" placeholder="Enter number of rotatable bonds">
+                    </div>
+
+                    <input type="submit" value="Predict" class="btn btn-primary btn-block">
+                </form>
+            </div>
+        </div>
+
+        {% if prediction %}
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-6">
+                    <h2>Predicted Toxicity Score: {{ prediction }}</h2>
+
+                    {% if prediction < 0 %}
+                        <div class="alert alert-success">
+                            <p class="message">This compound is predicted to have a low toxicity score.</p>
+                            <p class="message">It is likely to be safe for various applications.</p>
+                        </div>
+                    {% elif prediction >= 0 and prediction < 50 %}
+                        <div class="alert alert-warning">
+                            <p class="message">This compound is predicted to have a moderate toxicity score.</p>
+                            <p class="message">Caution should be exercised in handling and further evaluation may be required.</p>
+                        </div>
+                    {% elif prediction >= 50 and prediction < 100 %}
+                        <div class="alert alert-danger">
+                            <p class="message">This compound is predicted to have a high toxicity score.</p>
+                            <p class="message">Special precautions and safety measures should be taken when dealing with this compound.</p>
+                        </div>
+                    {% elif prediction >= 100 and prediction < 150 %}
+                        <div class="alert alert-danger">
+                            <p class="message">This compound is predicted to have a significant toxicity score.</p>
+                            <p class="message">It should be handled with extreme care and further evaluation is highly recommended.</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-dark">
+                            <p class="message">This compound is predicted to have an extremely high toxicity score.</p>
+                            <p class="message">It is considered highly toxic and should be avoided or handled by experts with proper safety protocols.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
